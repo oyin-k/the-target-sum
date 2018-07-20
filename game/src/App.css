@@ -1,28 +1,58 @@
-.App {
+.game {
+  margin-top: 15px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.target {
+  margin-top: 15px;
+  border: thin solid #999;
+  width: 40%;
+  height: 75px;
+  font-size: 45px;
   text-align: center;
+  display: inline-block;
+  background-color: #ccc;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.challenge-numbers {
+  width: 85%;
+  margin: 1rem auto;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+.number {
+  border: thin solid lightgray;
+  background-color: #eee;
+  width: 40%;
+  height: 60px;
+  text-align: center;
+  font-size: 36px;
+  border-radius: 5px;
+  margin-left: 7%;
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.footer {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+}
+
+.timer-value {
+  color: darkgreen;
+  font-size: 2rem;
+}
+
+.button {
+  background-color: #3299BB;
   color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  border: thin solid;
+  border-radius: 5px;
+  width: 60px;
+  height: 50px;
+  font-weight: bold;
+  font-size: 15px;
 }
