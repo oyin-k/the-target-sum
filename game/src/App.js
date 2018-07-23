@@ -8,7 +8,7 @@ const randomNumberBetween = (min, max) =>
 
 
 
-class Number extends Component {
+class Number extends PureComponent {
   handleClick = () => {
     if (this.props.clickable) {
       this.props.onClick(this.props.id);
