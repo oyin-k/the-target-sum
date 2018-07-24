@@ -2,10 +2,12 @@ import React, { Component, PureComponent } from 'react';
 import './App.css';
 import sampleSize from 'lodash/sampleSize';
 
+//TODO: gif of game played
+
+// TODO: scoreboard
+
 const randomNumberBetween = (min, max) => 
    Math.floor(Math.random() * (max - min + 1) ) + min;
-
-
 
 
 class Number extends PureComponent {
@@ -16,12 +18,13 @@ class Number extends PureComponent {
   };
 
   render () {
+    const {clickable, value} = this.props;
     return (
       <div 
         className="number" 
-        style={ {opacity: this.props.clickable ? 1 : 0.3 } }
+        style={ {opacity: clickable ? 1 : 0.3 } }
         onClick={this.handleClick}>
-        {this.props.value}
+        {value}
       </div>
     )
   }
@@ -109,37 +112,68 @@ class Game extends Component {
   }
 
   render () {
-    const {gameStatus, remainingSeconds} = this.state; //watch this for gameStatus style in target
+    const {gameStatus, remainingSeconds} = this.state; 
+    const {onPlayAgain} = this.props;
     return (
       <div className="game">
-        <div className="help">
-          Pick 4 numbers that sum up to the target in 10 seconds
+        <div className="playground">
+          <div className="help">
+            Pick 4 numbers that sum up to the target in 10 seconds
+          </div>
+          <div 
+            className="target" 
+            style={ {backgroundColor: Game.bgColors[gameStatus]} } >
+            {gameStatus === 'new' ? '?' : this.target}
+          </div>
+          <div className="challenge-numbers">
+            {this.challengeNumbers.map((value, index) => (
+              <Number 
+                key={index} 
+                value={gameStatus === 'new' ? '?' : value}
+                id={index}
+                clickable={this.isNumberAvailable(index)}
+                onClick={this.selectNumber} /> 
+            ))}
+          </div>
+          <div className="footer">
+            {gameStatus === 'new' ? (
+              <button className="button" onClick={this.startGame}>Start</button>
+            ) : (
+              <div className="timer-value">{remainingSeconds}</div>
+            )}
+            {['won', 'lost'].includes(gameStatus) && (
+              <button className="button" onClick={onPlayAgain}>Play again</button>
+            )} 
+          </div>
         </div>
-        <div 
-          className="target" 
-          style={ {backgroundColor: Game.bgColors[gameStatus]} } >
-          {gameStatus === 'new' ? '?' : this.target}
-        </div>
-        <div className="challenge-numbers">
-          {this.challengeNumbers.map((value, index) => (
-            <Number 
-              key={index} 
-              value={gameStatus === 'new' ? '?' : value}
-              id={index}
-              clickable={this.isNumberAvailable(index)}
-              onClick={this.selectNumber} /> 
-          ))}
-        </div>
-        <div className="footer">
-          {gameStatus === 'new' ? (
-            <button className="button" onClick={this.startGame}>Start</button>
-          ) : (
-            <div className="timer-value">{remainingSeconds}</div>
-          )}
-          {['won', 'lost'].includes(gameStatus) && (
-            <button className="button" onClick={this.props.onPlayAgain}>Play again</button>
-          )} 
-        </div>
+        
+
+        <ScoreBoard />
+      </div>
+    )
+  }
+}
+
+class ScoreBoard extends Component {
+  render () {
+    return (
+      <div className="scoreboard">
+        <table>
+          <thead>
+            <tr>
+              <th>Attempts</th>
+              <th>Wins</th>
+              <th>Score</th>
+            </tr>
+          </thead>      
+          <tbody>
+            <tr>
+              <td>20</td>
+              <td>15</td>
+              <td>56</td>
+            </tr>  
+          </tbody>         
+        </table>
       </div>
     )
   }
@@ -159,14 +193,16 @@ class App extends Component {
   
 
   render () {
+    const {gameId} = this.state;
     return (
-      <Game 
-        key={this.state.gameId}
-        autoPlay={this.state.gameId > 1}
+        <Game 
+        key={gameId}
+        autoPlay={gameId > 1}
         challengeSize={6} 
         challengeRange={[2, 9]} 
         initialSeconds={10}
-        onPlayAgain={this.resetGame} />
+        onPlayAgain={this.resetGame} 
+        />
     )
   }
 }
